@@ -148,7 +148,7 @@ public class ExtratoServiceTest
                 "------------------------------\n" +
                 "------------------------------\n" +
                 "Data : " + LocalDate.now() + "\n" +
-                "Tipo : FINANCIAMENTO\n" +
+                "Tipo : PAGAMENTOFINANCIAMENTO\n" +
                 "Valor: -1000.0\n" +
                 "------------------------------\n";
 

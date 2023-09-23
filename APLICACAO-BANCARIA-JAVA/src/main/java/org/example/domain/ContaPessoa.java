@@ -2,9 +2,7 @@ package org.example.domain;
 
 import org.example.domain.enums.TipoConta;
 
-import java.time.LocalDate;
-
-public class ContaPessoa extends ContaBancaria implements Verificacao
+public class ContaPessoa extends ContaBancaria implements ContaBancariaInterface
 {
     private String sNome;
     private String sCpf;

@@ -19,6 +19,12 @@ public class TransacoesBancariasService
         contaBancariaDestino.setdValorEmConta(contaBancariaDestino.getdValorEmConta() + dValor);
         contaBancariaDestino.addOperacao(dValor, TipoOperacao.PAGAMENTO);
     }
+
+    public Double Saldo(ContaBancaria contaBancaria)
+    {
+        return contaBancaria.getdValorEmConta();
+    }
+
     public void Financiamento(ContaBancaria contaBancaria, Double dValor, Integer iNumeroDeParcelas)
     {
         contaBancaria.setdValorEmConta(contaBancaria.getdValorEmConta() + dValor);
@@ -31,14 +37,12 @@ public class TransacoesBancariasService
 
     public void PagamentoDoFinanciamento(ContaBancaria contaBancaria, Double dValor, Integer iNumeroDeParcelas)
     {
-        // Calcula o valor total das parcelas
         Double valorTotalDasParcelas = (iNumeroDeParcelas * contaBancaria.getParcelasDoFinanciamento().get(0));
 
-        if (dValor >= valorTotalDasParcelas)
+        if (Math.round(dValor * 10.0)/10.0 == Math.round(valorTotalDasParcelas * 10.0)/10.0)
         {
-            // Realiza o pagamento das parcelas
             contaBancaria.setdValorEmConta(contaBancaria.getdValorEmConta() - dValor);
-            contaBancaria.addOperacao(dValor * (-1.0), TipoOperacao.FINANCIAMENTO);
+            contaBancaria.addOperacao(dValor * (-1.0), TipoOperacao.PAGAMENTOFINANCIAMENTO);
             for (int x = 0; x < iNumeroDeParcelas; x++)
             {
                 contaBancaria.rmParcela();

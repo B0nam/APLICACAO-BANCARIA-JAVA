@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class TransacoesBancariasServiceTest
 {
     @Test
-    public void ContaEmpresaDeveRealizarDeposito()
+    public void DeveRealizarDeposito()
     {
         TransacoesBancariasService transacoesBancariasService = new TransacoesBancariasService();
         ContaEmpresa contaEmpresa = new ContaEmpresa(1, TipoConta.CORRENTE, 0.0, "Josers Market", "11.111.111/0001-11");
@@ -19,7 +19,7 @@ public class TransacoesBancariasServiceTest
     }
 
     @Test
-    public void ContaEmpresaDeveRealizarPagamentoParaContraEmpresa()
+    public void DeveRealizarPagamento()
     {
         TransacoesBancariasService transacoesBancariasService = new TransacoesBancariasService();
         ContaEmpresa contaEmpresa1 = new ContaEmpresa(1, TipoConta.CORRENTE, 200.0, "Josers Market", "11.111.111/0001-11");
@@ -31,7 +31,16 @@ public class TransacoesBancariasServiceTest
     }
 
     @Test
-    public void ContaEmpresaDeveRealizarFianciamento()
+    public void DeveObterSaldo()
+    {
+        TransacoesBancariasService transacoesBancariasService = new TransacoesBancariasService();
+        ContaEmpresa contaEmpresa = new ContaEmpresa(1, TipoConta.CORRENTE, 200.0, "Josers Market", "11.111.111/0001-11");
+
+        Assertions.assertEquals(200.0,transacoesBancariasService.Saldo(contaEmpresa));
+    }
+
+    @Test
+    public void DeveRealizarFinanciamento()
     {
         TransacoesBancariasService transacoesBancariasService = new TransacoesBancariasService();
         ContaEmpresa contaEmpresa = new ContaEmpresa(1, TipoConta.CORRENTE, 0.0, "Josers Market", "11.111.111/0001-11");
@@ -43,19 +52,34 @@ public class TransacoesBancariasServiceTest
     }
 
     @Test
-    public void ContaEmpresaDeveRealizarPagamentoDoFinanciamento()
+    public void DeveRealizarPagamentoDeParcelaDoFinanciamento()
     {
         TransacoesBancariasService transacoesBancariasService = new TransacoesBancariasService();
-        ContaEmpresa contaEmpresa = new ContaEmpresa(1, TipoConta.CORRENTE, 0.0, "Josers Market", "11.111.111/0001-11");
+        ContaEmpresa contaEmpresa = new ContaEmpresa(1, TipoConta.CORRENTE, 0.00, "Josers Market", "11.111.111/0001-11");
 
         transacoesBancariasService.Financiamento(contaEmpresa, 1000.00, 10);;
-        transacoesBancariasService.PagamentoDoFinanciamento(contaEmpresa, 1000.0, 10);
+        transacoesBancariasService.PagamentoDoFinanciamento(contaEmpresa, 1000.00, 10);
 
         Assertions.assertEquals(0, contaEmpresa.getParcelasDoFinanciamento().size());
     }
 
     @Test
-    public void ContaEmpresaDeveRealizarAplicacao()
+    public void DeveGerarExceptionQuandoOValorNaoPagaAsParcelas()
+    {
+        TransacoesBancariasService transacoesBancariasService = new TransacoesBancariasService();
+        ContaEmpresa contaEmpresa = new ContaEmpresa(1, TipoConta.CORRENTE, 0.0, "Josers Market", "11.111.111/0001-11");
+
+        transacoesBancariasService.Financiamento(contaEmpresa, 1000.00, 10);;
+
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () ->
+        {
+            transacoesBancariasService.PagamentoDoFinanciamento(contaEmpresa, 10.00, 10);
+        });
+        Assertions.assertEquals("O valor inserido não paga a quantidade de parcelas desejadas.", exception.getMessage());
+    }
+
+    @Test
+    public void DeveRealizarAplicacao()
     {
         TransacoesBancariasService transacoesBancariasService = new TransacoesBancariasService();
         ContaEmpresa contaEmpresa = new ContaEmpresa(1, TipoConta.CORRENTE, 0.0, "Josers Market", "11.111.111/0001-11");

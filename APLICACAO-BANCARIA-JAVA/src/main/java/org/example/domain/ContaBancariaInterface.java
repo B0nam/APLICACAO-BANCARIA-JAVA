@@ -1,6 +1,6 @@
 package org.example.domain;
 
-public interface Verificacao
+public interface ContaBancariaInterface
 {
     void VerificarDocumentacao(String sDocumento1, String sDocumento2);
 }
