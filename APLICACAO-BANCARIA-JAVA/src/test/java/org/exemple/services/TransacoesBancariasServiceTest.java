@@ -33,15 +33,34 @@ public class TransacoesBancariasServiceTest
     @Test
     public void ContaEmpresaDeveRealizarFianciamento()
     {
+        TransacoesBancariasService transacoesBancariasService = new TransacoesBancariasService();
+        ContaEmpresa contaEmpresa = new ContaEmpresa(1, TipoConta.CORRENTE, 0.0, "Josers Market", "11.111.111/0001-11");
+
+        transacoesBancariasService.Financiamento(contaEmpresa, 1000.00, 10);;
+        Assertions.assertEquals(1000.00, contaEmpresa.getdValorEmConta());
+        Assertions.assertEquals(10, contaEmpresa.getParcelasDoFinanciamento().size());
+        Assertions.assertEquals(100.00, contaEmpresa.getParcelasDoFinanciamento().get(0));
     }
 
     @Test
     public void ContaEmpresaDeveRealizarPagamentoDoFinanciamento()
     {
+        TransacoesBancariasService transacoesBancariasService = new TransacoesBancariasService();
+        ContaEmpresa contaEmpresa = new ContaEmpresa(1, TipoConta.CORRENTE, 0.0, "Josers Market", "11.111.111/0001-11");
+
+        transacoesBancariasService.Financiamento(contaEmpresa, 1000.00, 10);;
+        transacoesBancariasService.PagamentoDoFinanciamento(contaEmpresa, 1000.0, 10);
+
+        Assertions.assertEquals(0, contaEmpresa.getParcelasDoFinanciamento().size());
     }
 
     @Test
     public void ContaEmpresaDeveRealizarAplicacao()
     {
+        TransacoesBancariasService transacoesBancariasService = new TransacoesBancariasService();
+        ContaEmpresa contaEmpresa = new ContaEmpresa(1, TipoConta.CORRENTE, 0.0, "Josers Market", "11.111.111/0001-11");
+
+        transacoesBancariasService.Aplicacao(contaEmpresa, 100.00, 20);
+        Assertions.assertEquals(120.00, contaEmpresa.getdValorEmConta());
     }
 }

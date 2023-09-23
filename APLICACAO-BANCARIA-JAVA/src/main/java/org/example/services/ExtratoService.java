@@ -14,9 +14,11 @@ public class ExtratoService
         {
             if (operacao.getData().isAfter(ldInicio) && operacao.getData().isBefore(ldFim))
             {
+                System.out.println("------------------------------");
                 System.out.println("Data : " + operacao.getData());
                 System.out.println("Tipo : " + operacao.getOperacao());
                 System.out.println("Valor: " + operacao.getValor());
+                System.out.println("------------------------------");
             }
         }
     }

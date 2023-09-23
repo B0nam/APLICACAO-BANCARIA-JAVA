@@ -14,7 +14,7 @@ public class TransacoesBancariasService
     public void Pagamento(ContaBancaria contaBancariaOrigem, ContaBancaria contaBancariaDestino, Double dValor)
     {
         contaBancariaOrigem.setdValorEmConta(contaBancariaOrigem.getdValorEmConta() - dValor);
-        contaBancariaOrigem.addOperacao(dValor, TipoOperacao.PAGAMENTO);
+        contaBancariaOrigem.addOperacao(dValor*(-1.0), TipoOperacao.PAGAMENTO);
 
         contaBancariaDestino.setdValorEmConta(contaBancariaDestino.getdValorEmConta() + dValor);
         contaBancariaDestino.addOperacao(dValor, TipoOperacao.PAGAMENTO);
@@ -22,7 +22,8 @@ public class TransacoesBancariasService
     public void Financiamento(ContaBancaria contaBancaria, Double dValor, Integer iNumeroDeParcelas)
     {
         contaBancaria.setdValorEmConta(contaBancaria.getdValorEmConta() + dValor);
-        for (int x = 0; x < iNumeroDeParcelas; x++)
+        contaBancaria.addOperacao(dValor, TipoOperacao.FINANCIAMENTO);
+        for (int x = 0; x != iNumeroDeParcelas; x++)
         {
             contaBancaria.addParcela(dValor / iNumeroDeParcelas);
         }
@@ -30,21 +31,34 @@ public class TransacoesBancariasService
 
     public void PagamentoDoFinanciamento(ContaBancaria contaBancaria, Double dValor, Integer iNumeroDeParcelas)
     {
-        contaBancaria.setdValorEmConta(contaBancaria.getdValorEmConta() - dValor);
-        for (int x = 0; x < iNumeroDeParcelas; x++)
+        // Calcula o valor total das parcelas
+        Double valorTotalDasParcelas = (iNumeroDeParcelas * contaBancaria.getParcelasDoFinanciamento().get(0));
+
+        if (dValor >= valorTotalDasParcelas)
         {
-            contaBancaria.rmParcela();
+            // Realiza o pagamento das parcelas
+            contaBancaria.setdValorEmConta(contaBancaria.getdValorEmConta() - dValor);
+            contaBancaria.addOperacao(dValor * (-1.0), TipoOperacao.FINANCIAMENTO);
+            for (int x = 0; x < iNumeroDeParcelas; x++)
+            {
+                contaBancaria.rmParcela();
+            }
+        }
+        else
+        {
+            throw new IllegalArgumentException("O valor inserido não paga a quantidade de parcelas desejadas.");
         }
     }
 
-    public void Aplicacao(ContaBancaria contaBancaria, Double dValor, Double dValorRetorno)
+
+    public void Aplicacao(ContaBancaria contaBancaria, Double dValor, int iPorcentagemRetorno)
     {
-        contaBancaria.addOperacao(dValor, TipoOperacao.APLICACAO);
+        contaBancaria.addOperacao(dValor*(-1.0), TipoOperacao.APLICACAO);
         contaBancaria.setdValorEmConta(contaBancaria.getdValorEmConta() - dValor);
 
-        Double dRetornoDaAplicacao = contaBancaria.getdValorEmConta() + (dValor * (dValorRetorno * 100));
+        Double dRetornoDaAplicacao = dValor + dValor + ((dValor * (double)(iPorcentagemRetorno) / 100));
 
-        contaBancaria.setdValorEmConta(dRetornoDaAplicacao);
-        contaBancaria.addOperacao(dRetornoDaAplicacao, TipoOperacao.DEPOSITO);
+        contaBancaria.setdValorEmConta(contaBancaria.getdValorEmConta() + dRetornoDaAplicacao);
+        contaBancaria.addOperacao(dRetornoDaAplicacao, TipoOperacao.APLICACAO);
     }
 }

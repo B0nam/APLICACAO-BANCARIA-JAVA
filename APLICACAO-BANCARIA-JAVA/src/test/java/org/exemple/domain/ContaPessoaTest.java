@@ -69,4 +69,55 @@ public class ContaPessoaTest
         });
         Assertions.assertEquals("Os documentos fornecidos são diferentes dos registrados.", exception.getMessage());
     }
+
+    @Test
+    void DeveObterOValorEmConta()
+    {
+        ContaPessoa contaPessoa = new ContaPessoa(1, TipoConta.CORRENTE, 50.0, "Joselito", "111.111.111-11");
+        Assertions.assertEquals(50.00, contaPessoa.getdValorEmConta());
+    }
+
+    @Test
+    void DeveSetarOValorEmConta()
+    {
+        ContaPessoa contaPessoa = new ContaPessoa(1, TipoConta.CORRENTE, 50.0, "Joselito", "111.111.111-11");
+        contaPessoa.setdValorEmConta(300.00);
+        Assertions.assertEquals(300.00, contaPessoa.getdValorEmConta());
+    }
+
+    @Test
+    void DeveAdicionarParcela()
+    {
+        ContaPessoa contaPessoa = new ContaPessoa(1, TipoConta.CORRENTE, 50.0, "Joselito", "111.111.111-11");
+        contaPessoa.addParcela(300.00);
+        Assertions.assertEquals(1, contaPessoa.getParcelasDoFinanciamento().size());
+        Assertions.assertEquals(300.00, contaPessoa.getParcelasDoFinanciamento().get(0));
+    }
+
+    @Test
+    void DeveRemoverParcela()
+    {
+        ContaPessoa contaPessoa = new ContaPessoa(1, TipoConta.CORRENTE, 50.0, "Joselito", "111.111.111-11");
+        contaPessoa.addParcela(300.00);
+        contaPessoa.addParcela(300.00);
+
+        contaPessoa.rmParcela();
+
+        Assertions.assertEquals(1, contaPessoa.getParcelasDoFinanciamento().size());
+        Assertions.assertEquals(300.00, contaPessoa.getParcelasDoFinanciamento().get(0));
+    }
+
+    @Test
+    void DeveObterAsParcelasDoFinanciamento()
+    {
+        ContaPessoa contaPessoa = new ContaPessoa(1, TipoConta.CORRENTE, 50.0, "Joselito", "111.111.111-11");
+        contaPessoa.addParcela(300.00);
+        contaPessoa.addParcela(300.00);
+
+        contaPessoa.rmParcela();
+
+        Assertions.assertEquals(1, contaPessoa.getParcelasDoFinanciamento().size());
+        Assertions.assertEquals(300.00, contaPessoa.getParcelasDoFinanciamento().get(0));
+    }
+
 }

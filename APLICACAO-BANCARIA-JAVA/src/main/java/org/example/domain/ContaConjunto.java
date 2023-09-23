@@ -18,7 +18,7 @@ public class ContaConjunto extends ContaBancaria
         {
             this.cbConta1 = cbConta1;
             this.cbConta2 = cbConta2;
-            this.dValorEmConta =  dValorEmConta + (cbConta1.getdValorEmConta() + cbConta2.getdValorEmConta());
+            this.setdValorEmConta(cbConta1.getdValorEmConta() + cbConta2.getdValorEmConta());
         }
         else
         {

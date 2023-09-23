@@ -54,4 +54,16 @@ public class ContaConjuntoTest
         });
         Assertions.assertEquals("As contas bancarias devem ser do mesmo tipo.", exception.getMessage());
     }
+
+    @Test
+    void DeveObterValorEmConta()
+    {
+        ContaEmpresa contaEmpresa1 = new ContaEmpresa(1, TipoConta.CORRENTE, 100.0, "Josers Market", "11.111.111/0001-11");
+        ContaEmpresa contaEmpresa2 = new ContaEmpresa(2, TipoConta.CORRENTE, 50.0, "Ambros Market", "22.222.222/0001-22");
+
+        ContaConjunto contaConjuntoEmpresa = new ContaConjunto(3, TipoConta.CORRENTE, 0.0,  contaEmpresa1, contaEmpresa2);
+        Assertions.assertEquals(100.0, contaEmpresa1.getdValorEmConta());
+        Assertions.assertEquals(50.0, contaEmpresa2.getdValorEmConta());
+        Assertions.assertEquals(150.00, contaConjuntoEmpresa.getdValorEmConta());
+    }
 }
