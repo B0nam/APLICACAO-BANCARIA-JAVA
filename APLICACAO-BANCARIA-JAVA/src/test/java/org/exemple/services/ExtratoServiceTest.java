@@ -139,9 +139,9 @@ public class ExtratoServiceTest
         System.out.flush();
         System.setOut(oldOut);
 
-        String extratoGerado = baos.toString();
+        String sExtratoGerado = baos.toString();
 
-        String extratoEsperado = "------------------------------\n" +
+        String sExtratoExperado = "------------------------------\n" +
                 "Data : " + LocalDate.now() + "\n" +
                 "Tipo : FINANCIAMENTO\n" +
                 "Valor: 1000.0\n" +
@@ -152,7 +152,7 @@ public class ExtratoServiceTest
                 "Valor: -1000.0\n" +
                 "------------------------------\n";
 
-        Assertions.assertEquals(extratoEsperado, extratoGerado);
+        Assertions.assertEquals(sExtratoExperado, sExtratoGerado);
     }
 
 
@@ -177,9 +177,9 @@ public class ExtratoServiceTest
         System.out.flush();
         System.setOut(oldOut);
 
-        String extratoGerado = baos.toString();
+        String sExtratoGerado = baos.toString();
 
-        String extratoEsperado = "------------------------------\n" +
+        String sExtratoEsperado = "------------------------------\n" +
                 "Data : " + LocalDate.now() + "\n" +
                 "Tipo : APLICACAO\n" +
                 "Valor: -100.0\n" +
@@ -190,6 +190,6 @@ public class ExtratoServiceTest
                 "Valor: 300.0\n" +
                 "------------------------------\n";
 
-        Assertions.assertEquals(extratoEsperado, extratoGerado);
+        Assertions.assertEquals(sExtratoEsperado, sExtratoGerado);
     }
 }

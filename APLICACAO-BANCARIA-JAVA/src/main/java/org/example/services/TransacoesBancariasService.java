@@ -37,9 +37,9 @@ public class TransacoesBancariasService
 
     public void PagamentoDoFinanciamento(ContaBancaria contaBancaria, Double dValor, Integer iNumeroDeParcelas)
     {
-        Double valorTotalDasParcelas = (iNumeroDeParcelas * contaBancaria.getParcelasDoFinanciamento().get(0));
+        Double dValorTotalParcelas = (iNumeroDeParcelas * contaBancaria.getParcelasDoFinanciamento().get(0));
 
-        if (Math.round(dValor * 10.0)/10.0 == Math.round(valorTotalDasParcelas * 10.0)/10.0)
+        if (Math.round(dValor * 10.0)/10.0 == Math.round(dValorTotalParcelas * 10.0)/10.0)
         {
             contaBancaria.setdValorEmConta(contaBancaria.getdValorEmConta() - dValor);
             contaBancaria.addOperacao(dValor * (-1.0), TipoOperacao.PAGAMENTOFINANCIAMENTO);
